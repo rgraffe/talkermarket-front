@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, MessageSquare, ShoppingBag, Star, Truck } from 'lucide-react'
+import axios from 'axios'
 
 interface Product {
   id: number
@@ -21,6 +22,32 @@ interface Product {
   img_url: string
   free_shipping: boolean
 }
+
+const getSQL = async (query: string): Promise<string> => {
+  try {
+    const response = await axios.post('https://flask-gemini-one.vercel.app/generate-sql', {
+      user_prompt: query
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Extract the SQL query from the response
+    const sqlQuery: string = response.data.sql_query;
+    return sqlQuery;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.message);
+      console.error('Response data:', error.response?.data);
+      console.error('Response status:', error.response?.status);
+      console.error('Response headers:', error.response?.headers);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    return '';
+  }
+};
 
 // Mock function to simulate natural language processing and product recommendation
 const getRecommendations = async (query: string): Promise<Product[]> => {
@@ -88,9 +115,13 @@ export function TalkerMarket() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
 
+  
+
   const handleSearch = async () => {
     setLoading(true)
     try {
+      const sqlQuery = await getSQL(query)
+      console.log(sqlQuery)
       const results = await getRecommendations(query)
       setProducts(results)
     } catch (error) {
@@ -99,6 +130,8 @@ export function TalkerMarket() {
       setLoading(false)
     }
   }
+
+
 
   return (
     <div className="max-w-6xl mx-auto p-4">
