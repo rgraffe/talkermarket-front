@@ -33,7 +33,7 @@ interface Product {
 const getProducts = async (query: string) => {
   try {
     const response = await axios.post(
-      "https://flask-gemini-one.vercel.app/generate-sql",
+      "https://flask-gemini-one.vercel.app/get-products",
       {
         user_prompt: query,
       },
