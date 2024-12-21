@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, MessageSquare, ShoppingBag, Star, Truck } from "lucide-react";
-import axios from "axios";
+import { getProducts } from "@/app/data";
 
 interface Product {
   id: number;
@@ -30,47 +30,41 @@ interface Product {
   free_shipping: boolean;
 }
 
-const getProducts = async (query: string) => {
+const fetchProducts = async (query: string) => {
   try {
-    const response = await axios.post(
-      "https://flask-gemini-one.vercel.app/get-products",
-      {
-        user_prompt: query,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    // Extract the SQL query from the response
-    const sqlQuery: string = response.data.sql;
-    const products: Product[] = response.data.products;
-    return { sqlQuery, products };
+    const searchParams = new URLSearchParams({
+      q: query,
+    });
+    const response = await fetch("/api/products?" + searchParams.toString());
+    const body = (await response.json()) as ReturnType<typeof getProducts>;
+    return body;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.message);
-      console.error("Response data:", error.response?.data);
-      console.error("Response status:", error.response?.status);
-      console.error("Response headers:", error.response?.headers);
-    } else {
-      console.error("Unexpected error:", error);
-    }
-    return { sqlQuery: "", products: [] };
+    console.error("Unexpected error:", error);
+    return { type: "error" as const, message: "Ocurrió un error" };
   }
 };
 
 export function TalkerMarket() {
   const [query, setQuery] = useState("");
+  const [sql, setSql] = useState("");
+  const [error, setError] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
+    setError("");
     setLoading(true);
     try {
-      const data = await getProducts(query);
-      setProducts(data.products);
+      const data = await fetchProducts(query);
+      if (data.type === "error") {
+        setProducts([]);
+        setSql("");
+        setError(data.message);
+      } else {
+        setError("");
+        setProducts(data.products);
+        setSql(data.sql);
+      }
     } catch (error) {
       console.error("Error fetching recommendations:", error);
     } finally {
@@ -174,12 +168,16 @@ export function TalkerMarket() {
             </CardFooter>
           </Card>
         ))}
+        <p>{sql}</p>
       </div>
       {products.length === 0 && !loading && query && (
         <p className="text-center text-muted-foreground mt-4">
           No se encontraron productos. Intenta describir tus necesidades de otra
           manera.
         </p>
+      )}
+      {!!error.length && (
+        <p className="text-center text-muted-foreground mt-4">{error}</p>
       )}
     </div>
   );
