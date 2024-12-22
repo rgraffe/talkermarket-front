@@ -63,7 +63,7 @@ export async function getProducts(query: string) {
       result.response.text().replaceAll("`", "").replace("json", "")
     );
     json = json as GeminiJson;
-  } catch (error) {
+  } catch {
     return {
       type: "error" as const,
       message: "Respuesta inválida de Gemini",

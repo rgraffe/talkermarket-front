@@ -168,8 +168,13 @@ export function TalkerMarket() {
             </CardFooter>
           </Card>
         ))}
-        <p>{sql}</p>
       </div>
+      {!!sql.length && (
+        <div className="py-4">
+          <h2 className="text-xl font-semibold">Consulta generada</h2>
+          <p>{sql}</p>
+        </div>
+      )}
       {products.length === 0 && !loading && query && (
         <p className="text-center text-muted-foreground mt-4">
           No se encontraron productos. Intenta describir tus necesidades de otra
