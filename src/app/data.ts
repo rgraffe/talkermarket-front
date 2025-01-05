@@ -10,12 +10,12 @@ export type Product = {
   id: number;
   title: string;
   price: number;
-  rating: number;
-  seller_reputation: string;
-  brand: string;
-  cpu: string;
-  disk: string;
-  ram: string;
+  rating?: number;
+  seller_reputation?: string;
+  brand?: string;
+  cpu?: string;
+  disk?: string;
+  ram?: string;
   post_url: string;
   img_url: string;
   free_shipping: boolean;
