@@ -13,22 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, MessageSquare, ShoppingBag, Star, Truck } from "lucide-react";
-import { getProducts } from "@/app/data";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  rating: number;
-  seller_reputation: string;
-  brand: string;
-  cpu: string;
-  disk: string;
-  ram: string;
-  post_url: string;
-  img_url: string;
-  free_shipping: boolean;
-}
+import { getProducts, Product } from "@/app/data";
 
 const fetchProducts = async (query: string) => {
   try {
@@ -122,7 +107,7 @@ export function TalkerMarket() {
                 </span>
                 <div className="flex items-center mt-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                  <span>{product.rating.toFixed(1)}</span>
+                  <span>{product.rating?.toFixed(1) ?? "Sin calificaciones"}</span>
                 </div>
               </CardDescription>
             </CardHeader>
