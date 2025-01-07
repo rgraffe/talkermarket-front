@@ -45,7 +45,7 @@ export async function getProducts(query: string) {
     - brand: varchar, optional, indicates the brand of the PC
     - cpu: varchar, optional, indicates the brand and model of the CPU
     - disk: int, optional, indicates the capacity in MB of storage
-    - ram: int, optional, indicates the capacity in MB of RAM
+    - ram: int, optional, indicates the capacity in MB of RAM, it is measured in intervals of 1024 MB
     - free_shipping: boolean, indicates if there's no additional cost for shipping the PC
     
     Reply in JSON format, with two fields:

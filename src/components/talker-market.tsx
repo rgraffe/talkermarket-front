@@ -122,10 +122,10 @@ export function TalkerMarket() {
                 </p>
                 <p>
                   <span className="font-semibold">Almacenamiento:</span>{" "}
-                  {product.disk}
+                  {product.disk ? parseInt(product.disk) / 1024 : "N/A"} GB
                 </p>
                 <p>
-                  <span className="font-semibold">RAM:</span> {product.ram}
+                  <span className="font-semibold">RAM:</span> {product.ram? parseInt(product.ram)/1024 : "N/A"} GB
                 </p>
                 <p>
                   <span className="font-semibold">
