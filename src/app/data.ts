@@ -44,7 +44,7 @@ export async function getProducts(query: string) {
     - seller_reputation: int, optional, from 0 to 5. If specified, indicates how trusted the seller is
     - brand: varchar, optional, indicates the brand of the PC
     - cpu: varchar, optional, indicates the brand and model of the CPU
-    - disk: int, optional, indicates the capacity in MB of storage
+    - disk: int, optional, indicates the capacity in MB of storage, it is measured in intervals of 1024 MB
     - ram: int, optional, indicates the capacity in MB of RAM, it is measured in intervals of 1024 MB
     - free_shipping: boolean, indicates if there's no additional cost for shipping the PC
     
