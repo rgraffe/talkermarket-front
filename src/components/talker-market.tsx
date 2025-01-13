@@ -75,7 +75,7 @@ export function TalkerMarket() {
         </CardHeader>
         <CardContent>
           <Textarea
-            placeholder="Ej: Necesito una laptop con al menos 8GB de RAM y 256GB de almacenamiento SSD, preferiblemente de una marca reconocida"
+            placeholder="Ej: Necesito una computadora con al menos 8GB de RAM y 256GB de almacenamiento SSD, preferiblemente de una marca reconocida"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             rows={3}
